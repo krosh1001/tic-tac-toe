@@ -105,21 +105,63 @@ function clickOnCell (row, col) {
 
 function cellClickHandler (row, col) {
     if (field[row][col] !== EMPTY || isGameOver) {
-        return
+        return;
     }
 
-    field[row][col] = curPlayer
-    renderSymbolInCell(curPlayer, row, col)
+    field[row][col] = curPlayer;
+    renderSymbolInCell(curPlayer, row, col);
+
+    const winner = checkWinner();
+    if (winner) {
+        alert(`Победил ${winner}!`);
+        isGameOver = true;
+        return; 
+    }
 
     if (isFieldFull()) {
-        alert('Победила дружба')
-        isGameOver = true
+        alert('Победила дружба');
+        isGameOver = true;
     }
 
-    curPlayer = (curPlayer === CROSS) ? ZERO : CROSS
-
-    console.log(`Clicked on cell: ${row}, ${col}`)
+    curPlayer = (curPlayer === CROSS) ? ZERO : CROSS;
 }
+
+function checkWinner() {
+    for (let i = 0; i < dimension; i++) {
+        if (field[i][0] !== EMPTY && field[i].every(cell => cell === field[i][0])) {
+            return field[i][0];
+        }
+    }
+
+    for (let j = 0; j < dimension; j++) {
+        let column = [];
+        for (let i = 0; i < dimension; i++) {
+            column.push(field[i][j]);
+        }
+        if (column[0] !== EMPTY && column.every(cell => cell === column[0])) {
+            return column[0];
+        }
+    }
+
+    let diag1 = [];
+    for (let i = 0; i < dimension; i++) {
+        diag1.push(field[i][i]);
+    }
+    if (diag1[0] !== EMPTY && diag1.every(cell => cell === diag1[0])) {
+        return diag1[0];
+    }
+
+    let diag2 = [];
+    for (let i = 0; i < dimension; i++) {
+        diag2.push(field[i][dimension - 1 - i]);
+    }
+    if (diag2[0] !== EMPTY && diag2.every(cell => cell === diag2[0])) {
+        return diag2[0];
+    }
+
+    return null;
+}
+
 
 function isFieldFull() {
     for (let i = 0; i < dimension; i++) {
