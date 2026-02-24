@@ -3,12 +3,24 @@ const ZERO = 'O';
 const EMPTY = ' ';
 
 const container = document.getElementById('fieldWrapper');
+let field = []; 
+let curPlayer = CROSS; 
+let isGameOver = false; 
+let dimension = 3;
 
 startGame();
 addResetListener();
 
 function startGame () {
-    renderGrid(3);
+    const input = prompt("Введите размер поля:", "3");
+    dimension = parseInt(input) || 3;
+    
+    field = [];
+    for (let i = 0; i < dimension; i++) {
+        field[i] = new Array(dimension).fill(EMPTY);
+    }
+    
+    renderGrid(dimension);
 }
 
 function renderGrid (dimension) {
@@ -27,13 +39,16 @@ function renderGrid (dimension) {
 }
 
 function cellClickHandler (row, col) {
-    // Пиши код тут
+    if (field[row][col] !== EMPTY || isGameOver) {
+        return;
+    }
+
+    field[row][col] = curPlayer;
+    renderSymbolInCell(curPlayer, row, col);
+    
+    curPlayer = (curPlayer === CROSS) ? ZERO : CROSS;
+
     console.log(`Clicked on cell: ${row}, ${col}`);
-
-
-    /* Пользоваться методом для размещения символа в клетке так:
-        renderSymbolInCell(ZERO, row, col);
-     */
 }
 
 function renderSymbolInCell (symbol, row, col, color = '#333') {
@@ -55,10 +70,12 @@ function addResetListener () {
 
 function resetClickHandler () {
     console.log('reset!');
+    curPlayer = CROSS;
+    isGameOver = false;
+    startGame();
 }
 
 
-/* Test Function */
 /* Победа первого игрока */
 function testWin () {
     clickOnCell(0, 2);
