@@ -203,3 +203,26 @@ function addResetListener () {
 function resetClickHandler () {
     startGame()
 }
+
+function testWin () {
+    clickOnCell(0, 2)
+    clickOnCell(0, 0)
+    clickOnCell(2, 0)
+    clickOnCell(1, 1)
+    clickOnCell(2, 2)
+    clickOnCell(1, 2)
+    clickOnCell(2, 1)
+}
+
+function testDraw () {
+    clickOnCell(2, 0)
+    clickOnCell(1, 0)
+    clickOnCell(1, 1)
+    clickOnCell(0, 0)
+    clickOnCell(1, 2)
+    clickOnCell(1, 2)
+    clickOnCell(0, 2)
+    clickOnCell(0, 1)
+    clickOnCell(2, 1)
+    clickOnCell(2, 2)
+}
